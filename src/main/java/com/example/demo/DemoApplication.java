@@ -7,14 +7,9 @@ import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
 import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 import org.springframework.web.socket.config.annotation.WebSocketMessageBrokerConfigurer;
-import org.springframework.web.util.HtmlUtils;
-
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 // https://spring.io/guides/gs/messaging-stomp-websocket/
 
@@ -37,8 +32,8 @@ public class DemoApplication implements WebSocketMessageBrokerConfigurer {
     }
 
     public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
+        SpringApplication.run(DemoApplication.class, args);
+    }
 
 
     // If message is sent to /hello destination, greeting() method is called
