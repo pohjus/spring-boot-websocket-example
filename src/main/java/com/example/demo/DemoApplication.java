@@ -23,27 +23,33 @@ import java.util.Date;
 @Configuration
 @EnableWebSocketMessageBroker
 public class DemoApplication implements WebSocketMessageBrokerConfigurer {
-
-	public static void main(String[] args) {
-		SpringApplication.run(DemoApplication.class, args);
-	}
-
-
-    @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public Greeting greeting(HelloMessage message) throws Exception {
-        Thread.sleep(1000); // simulated delay
-        return new Greeting("Hello, " + HtmlUtils.htmlEscape(message.getName()) + "!");
-    }
-
     @Override
     public void configureMessageBroker(MessageBrokerRegistry config) {
+        // Enable a simple memory-based message broker to carry the greeting messages
+        // back to the client on destinations prefixed with /topic
         config.enableSimpleBroker("/topic");
-        config.setApplicationDestinationPrefixes("/app");
     }
 
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
-        registry.addEndpoint("/gs-guide-websocket").withSockJS();
+        // The client will attempt to connect to /my-websocket-service
+        registry.addEndpoint("/my-websocket-service").withSockJS();
+    }
+
+    public static void main(String[] args) {
+		SpringApplication.run(DemoApplication.class, args);
+	}
+
+
+    // If message is sent to /hello destination, greeting() method is called
+    // Return value is broadcast to all subscribers of /topic/greetings
+    @MessageMapping("/hello")
+    @SendTo("/topic/greetings")
+    public Greeting greeting(HelloMessage message) throws Exception {
+        // Let's simulate a delay, the client can do whatever at this time.
+        Thread.sleep(1000);
+
+
+        return new Greeting("Hello, " + message.getName());
     }
 }
